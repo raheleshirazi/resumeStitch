@@ -5,33 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>رزومه ساز استیچ</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- فاوآیکون -->
     <link rel="icon" href="assets/images/faveicon resume.webp">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6700EB',
-                        accent: '#FBC400',
-                        light: '#FFFFFF',
-                        gradientStart: '#8700C6',
-                        gradientEnd: '#5F00D9'
-                    },
-                    fontFamily: {
-                        vazir: ['Vazirmatn', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap');
+    <!-- فونت Vazirmatn -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS باید به صورت محلی build شود (این خط را حذف یا جایگزین کنید) -->
 
+    <link rel="stylesheet" href="./dict/output.css">
+    <style>
         body {
             font-family: 'Vazirmatn', sans-serif;
             transition: background-color 0.3s ease;
@@ -118,9 +99,8 @@
     <header class="gradient-header-footer text-white shadow-lg py-3 px-4">
         <div class="container mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-2 space-x-reverse">
-
                 <img src="./assets/images/image resume.png" alt="image icon resume" class="w-[50px]">
-                <span class="text-[19px] font-bold">رزومه ساز استیچ</span>
+                <span class="text-2xl font-bold">رزومه ساز استیچ</span>
             </div>
 
             <nav class="hidden md:flex space-x-6 space-x-reverse">
@@ -160,11 +140,10 @@
                         شروع کنید
                     </button>
                 </div>
-                <div class="md:w-1/2 flex justify-center item-center">
+                <div class="md:w-1/2 flex justify-center">
                     <img src="./assets/images/image resume body .jpg" alt="image resume in page" class="w-[300px]">
                 </div>
             </div>
-        </div>
         </div>
     </main>
 
@@ -285,22 +264,43 @@
         </div>
     </div>
 
+    <!-- Lucide Icons (inline برای جلوگیری از CDN) -->
     <script>
-        // وضعیت کاربر (برای تست)
-        let isLoggedIn = false; // تغییر به true برای تست حالت لاگین شده
+        // Lucide Icons (نسخه inline سبک)
+        (function () {
+            const lucide = {
+                createIcons: function () {
+                    document.querySelectorAll('[data-lucide]').forEach(el => {
+                        const name = el.getAttribute('data-lucide');
+                        if (name === 'moon') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+                        else if (name === 'sun') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
+                        else if (name === 'user') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+                        else if (name === 'log-in') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
+                        else if (name === 'file-text') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+                        else if (name === 'briefcase') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
+                        else if (name === 'instagram') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>';
+                        else if (name === 'linkedin') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>';
+                        else if (name === 'mail') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+                        el.removeAttribute('data-lucide');
+                    });
+                }
+            };
+            window.lucide = lucide;
+        })();
+    </script>
+
+    <script>
+        let isLoggedIn = false;
         let hasResume = false;
 
-        // بارگذاری آیکون‌ها
         lucide.createIcons();
 
-        // نمایش صفحات
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             if (pageName === 'home') {
                 document.getElementById('home-page').classList.add('active');
             } else if (pageName === 'resumes') {
                 document.getElementById('resumes-page').classList.add('active');
-                // نمایش وضعیت مناسب
                 document.getElementById('notLoggedIn').classList.add('hidden');
                 document.getElementById('noResume').classList.add('hidden');
                 if (!isLoggedIn) {
@@ -311,7 +311,6 @@
             }
         }
 
-        // مدال
         function openResumeModal() {
             document.getElementById('resumeModal').style.display = 'flex';
         }
@@ -322,22 +321,21 @@
             e.preventDefault();
             alert('اطلاعات شما ذخیره شد! حالا می‌توانید رزومه خود را طراحی کنید.');
             closeModal();
-            hasResume = true; // برای تست
+            hasResume = true;
         });
 
-        // تغییر تم
         document.getElementById('theme-toggle').addEventListener('click', () => {
             const isDark = document.body.classList.contains('dark');
             if (isDark) {
                 document.body.classList.remove('dark');
                 document.body.style.backgroundColor = '#FFFFFF';
                 document.body.style.color = '#1F2937';
-                document.querySelector('#theme-toggle i').setAttribute('data-lucide', 'moon');
+                document.querySelector('#theme-toggle i').outerHTML = '<i data-lucide="moon" class="w-6 h-6"></i>';
             } else {
                 document.body.classList.add('dark');
                 document.body.style.backgroundColor = '#121212';
                 document.body.style.color = '#FFFFFF';
-                document.querySelector('#theme-toggle i').setAttribute('data-lucide', 'sun');
+                document.querySelector('#theme-toggle i').outerHTML = '<i data-lucide="sun" class="w-6 h-6"></i>';
             }
             lucide.createIcons();
         });
