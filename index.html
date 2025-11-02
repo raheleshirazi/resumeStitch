@@ -9,13 +9,13 @@
     <link rel="icon" href="assets/images/faveicon resume.webp">
     <!-- فونت Vazirmatn -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS باید به صورت محلی build شود (این خط را حذف یا جایگزین کنید) -->
-
-    <link rel="stylesheet" href="./dict/output.css">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="./dist/output.css">
     <style>
         body {
             font-family: 'Vazirmatn', sans-serif;
             transition: background-color 0.3s ease;
+            background-color: white; /* پس‌زمینه سفید */
         }
 
         .gradient-header-footer {
@@ -52,44 +52,239 @@
             }
         }
 
-        .modal-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: popIn 0.3s ease-out;
-        }
-
-        @keyframes popIn {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
         .page {
             display: none;
         }
 
         .page.active {
             display: block;
+        }
+
+        /* استایل‌های جدید برای فیلدهای ورودی */
+        .input-container {
+            position: relative;
+            margin-bottom: 0.8rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.6rem 1rem; /* کاهش ارتفاع */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+            outline: none;
+            height: 45px; /* ارتفاع ثابت */
+        }
+
+        .input-field:focus {
+            border-color: #FBC400;
+            box-shadow: 0 0 0 2px rgba(251, 196, 0, 0.2);
+        }
+
+        .input-label {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .input-field:focus+.input-label,
+        .input-field:not(:placeholder-shown)+.input-label {
+            top: 0;
+            font-size: 0.8rem;
+            color: #FBC400;
+            background-color: #6700EB;
+            padding: 0 0.3rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #FBC400;
+        }
+
+        .toggle-auth {
+            text-align: center;
+            margin-top: 1rem;
+            color: #FBC400;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* کپچا */
+        .captcha {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .captcha-code {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 0.2rem;
+            color: #FBC400;
+        }
+
+        .captcha-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.25rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            height: 40px; /* ارتفاع ثابت */
+        }
+
+        .captcha-refresh {
+            cursor: pointer;
+            color: #FBC400;
+            font-size: 1.2rem;
+        }
+
+        /* فراموشی رمز */
+        .forgot-password {
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #FBC400;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* استایل برای فیلد شماره تلفن */
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .country-code {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 0.5rem 0.5rem 0; /* تغییر به سمت چپ */
+            padding: 0.6rem 0.5rem;
+            color: white;
+            font-size: 0.9rem;
+            height: 45px; /* ارتفاع ثابت */
+            display: flex;
+            align-items: center;
+        }
+
+        .phone-input {
+            border-radius: 0.5rem 0 0 0.5rem; /* تغییر به سمت راست */
+            border-left: none;
+            flex: 1;
+        }
+
+        /* صفحه فرم‌ها */
+        .auth-page {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            background: white; /* پس‌زمینه سفید */
+        }
+
+        .auth-container {
+            width: 1000px;
+            height: 600px;
+            display: flex;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: white;
+        }
+
+        .auth-image {
+            width: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .auth-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 1rem;
+        }
+
+        .auth-form {
+            width: 50%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #6700EB;
+            color: white;
+            border-radius: 0 1.5rem 1.5rem 0;
+        }
+
+        /* سوالات متداول */
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 0;
+            cursor: pointer;
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .faq-answer {
+            display: none;
+            padding-top: 0.5rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .faq-active .faq-answer {
+            display: block;
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6700EB;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #3b82f6;
+            font-size: 0.875rem;
+        }
+
+        .faq-footer a {
+            color: #3b82f6;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -105,8 +300,7 @@
 
             <nav class="hidden md:flex space-x-6 space-x-reverse">
                 <a href="#" onclick="showPage('home')" class="hover-accent transition-colors duration-300">خانه</a>
-                <a href="#" onclick="showPage('home')" class="hover-accent transition-colors duration-300">ساخت
-                    رزومه</a>
+                <a href="#" onclick="showPage('auth')" class="hover-accent transition-colors duration-300">ساخت رزومه</a>
                 <a href="#" onclick="showPage('resumes')" class="hover-accent transition-colors duration-300">رزومه‌های
                     من</a>
                 <a href="#" onclick="showPage('home')" class="hover-accent transition-colors duration-300">راهنما</a>
@@ -116,7 +310,7 @@
                 <button id="theme-toggle" class="hover-accent p-2 rounded-full bg-white/10 hover:bg-white/20">
                     <i data-lucide="moon" class="w-6 h-6"></i>
                 </button>
-                <button class="hover-accent p-2 rounded-full bg-white/10 hover:bg-white/20">
+                <button onclick="showPage('auth')" class="hover-accent p-2 rounded-full bg-white/10 hover:bg-white/20">
                     <i data-lucide="user" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -135,7 +329,7 @@
                         با ابزار «رزومه ساز استیچ»، رزومه‌ای زیبا، مدرن و کاملاً شخصی‌سازی‌شده بسازید که چشم‌ها را به
                         خود جلب کند.
                     </p>
-                    <button onclick="openResumeModal()"
+                    <button onclick="showPage('auth')"
                         class="bg-primary hover:bg-accent text-white font-bold py-3 px-8 rounded-full transition-all duration-300 btn-glow">
                         شروع کنید
                     </button>
@@ -145,6 +339,108 @@
                 </div>
             </div>
         </div>
+    </main>
+
+    <!-- صفحه احراز هویت -->
+    <main id="auth-page" class="page">
+        <section class="auth-page">
+            <div class="auth-container">
+                <!-- سمت چپ: تصویر -->
+                <div class="auth-image">
+                    <img id="authImage" src="./assets/images/image resume body .jpg" alt="Authentication illustration">
+                </div>
+
+                <!-- سمت راست: فرم -->
+                <div class="auth-form">
+                    <h2 id="authTitle" class="text-2xl font-bold mb-6 text-center text-white">ورود به حساب کاربری</h2>
+                    <form id="authForm">
+                        <!-- فیلدهای ورود -->
+                        <div id="loginFields">
+                            <div class="input-container">
+                                <input type="text" id="loginUsername" class="input-field" placeholder=" " required />
+                                <label for="loginUsername" class="input-label">ایمیل</label>
+                            </div>
+                            <div class="input-container">
+                                <input type="password" id="loginPassword" class="input-field" placeholder=" " required />
+                                <label for="loginPassword" class="input-label">رمز عبور</label>
+                                <span class="password-toggle" onclick="togglePassword('loginPassword')">
+                                    <i data-lucide="eye" id="loginEyeIcon" class="w-5 h-5"></i>
+                                </span>
+                            </div>
+                            <div class="forgot-password" onclick="alert('در حال توسعه...')">رمز عبور را فراموش کرده‌اید؟
+                            </div>
+                            <!-- کپچا -->
+                            <div class="captcha">
+                                <span id="captchaCode" class="captcha-code">1234</span>
+                                <input type="text" id="captchaInput" class="captcha-input" placeholder="کد کپچا" required />
+                                <span class="captcha-refresh" onclick="generateCaptcha()">
+                                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- فیلدهای ثبت‌نام -->
+                        <div id="registerFields" class="hidden">
+                            <div class="input-container">
+                                <input type="text" id="registerFirstName" class="input-field" placeholder=" " required />
+                                <label for="registerFirstName" class="input-label">نام</label>
+                            </div>
+                            <div class="input-container">
+                                <input type="text" id="registerLastName" class="input-field" placeholder=" " required />
+                                <label for="registerLastName" class="input-label">نام خانوادگی</label>
+                            </div>
+                            <div class="input-container">
+                                <input type="email" id="registerEmail" class="input-field" placeholder=" " required />
+                                <label for="registerEmail" class="input-label">ایمیل</label>
+                            </div>
+                            <div class="input-container">
+                                <div class="phone-input-container">
+                                    <input type="tel" id="registerPhone" class="input-field phone-input" placeholder=" " required />
+                                    <span class="country-code">+98</span>
+                                    <label for="registerPhone" class="input-label">شماره تماس</label>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                <input type="password" id="registerPassword" class="input-field" placeholder=" " required />
+                                <label for="registerPassword" class="input-label">رمز عبور</label>
+                                <span class="password-toggle" onclick="togglePassword('registerPassword')">
+                                    <i data-lucide="eye" id="registerEyeIcon" class="w-5 h-5"></i>
+                                </span>
+                            </div>
+                            <div class="input-container">
+                                <input type="password" id="registerPasswordConfirm" class="input-field" placeholder=" " required />
+                                <label for="registerPasswordConfirm" class="input-label">تکرار رمز عبور</label>
+                                <span class="password-toggle" onclick="togglePassword('registerPasswordConfirm')">
+                                    <i data-lucide="eye" id="registerEyeConfirmIcon" class="w-5 h-5"></i>
+                                </span>
+                            </div>
+                            <!-- کپچا -->
+                            <div class="captcha">
+                                <span id="captchaCodeReg" class="captcha-code">5678</span>
+                                <input type="text" id="captchaInputReg" class="captcha-input" placeholder="کد کپچا" required />
+                                <span class="captcha-refresh" onclick="generateCaptchaReg()">
+                                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-accent hover:bg-primary text-black py-3 rounded-lg font-medium transition-colors mb-4">
+                            <span id="authSubmitText">ورود</span>
+                        </button>
+                    </form>
+                    <div class="toggle-auth" onclick="toggleAuthMode()">
+                        <span id="authToggleText" class="text-accent font-medium">ثبت‌نام نکرده‌اید؟ <u>ثبت‌نام کنید</u></span>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button onclick="showPage('home')" class="text-white hover:text-accent transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5 inline ml-1"></i>
+                            بازگشت به صفحه اصلی
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- صفحه رزومه‌ها -->
@@ -158,7 +454,7 @@
                     <button onclick="showPage('home')"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full btn-glow">بازگشت به صفحه
                         اصلی</button>
-                    <button onclick="alert('صفحه ورود در حال توسعه است!')"
+                    <button onclick="showPage('auth')"
                         class="bg-primary hover:bg-accent text-white px-6 py-3 rounded-full btn-glow">ورود / ثبت
                         نام</button>
                 </div>
@@ -172,13 +468,153 @@
                     <button onclick="showPage('home')"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full btn-glow">بازگشت به صفحه
                         اصلی</button>
-                    <button onclick="openResumeModal()"
+                    <button onclick="showPage('auth')"
                         class="bg-primary hover:bg-accent text-white px-6 py-3 rounded-full btn-glow">ساخت رزومه
                         انلاین</button>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- بخش اول: چرا بهتر است از رزومه ساز استفاده کنیم؟ -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="md:w-1/2">
+                    <img src="./assets/images/image resume body .jpg" alt="چرا رزومه ساز؟" class="rounded-xl shadow-lg">
+                </div>
+                <div class="md:w-1/2 text-right">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">چرا بهتر است از رزومه ساز استفاده
+                        کنیم؟</h2>
+                    <p class="text-gray-600 mb-4">
+                        استفاده از رزومه ساز، فرآیند ایجاد رزومه را بسیار سریعتر و آسان‌تر می‌کند. آیا تا به حال سعی
+                        کرده‌اید رزومه‌تان را با نرم افزار WORD بسازید؟ گاهی اوقات اگر یک تغییر کوچک در رزومه ایجاد
+                        کنید، چینش رزومه شما تغییر می‌کند.
+                    </p>
+                    <p class="text-gray-600 mb-4">
+                        با رزومه ساز آنلاین، شما بدون نگرانی از مسائلی چینش مانند تنظیم فاصله‌ی پاراگراف‌ها، فقط به
+                        محتوای رزومه فکر می‌کنید. کافی است یک قالب رزومه انتخاب کنید، فرم اطلاعات را پر کنید و فایل
+                        رزومه را دانلود کنید.
+                    </p>
+                    <button onclick="showPage('auth')"
+                        class="mt-6 bg-accent hover:bg-primary text-white font-bold py-3 px-8 rounded-full transition-colors">
+                        همین حالا رزومه بسازید
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش دوم: چرا از آنلاین پیشنهاد می‌شود؟ -->
+    <section class="py-12">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="md:w-1/2 text-right">
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-700 mb-4">چرا از آنلاین پیشنهاد می‌شود؟</h2>
+                    <p class="text-gray-600 mb-4">
+                        همه ما می‌دانیم که با استفاده از ابزار مناسب، انجام هر کاری آسان و لذتبخش می‌شود. رزومه ساز
+                        آنلاین ابزاری است که جمله بهترین و کارآمدترین ابزار برای ساخت رزومه است.
+                    </p>
+                    <div class="mt-6">
+                        <h3 class="font-bold text-gray-800 mb-2">محتواساز هوشمند و استاندارد</h3>
+                        <p class="text-gray-600 mb-4">
+                            اطلاعات خود را در رزومه ساز وارد کنید، سپس با استفاده از هوش مصنوعی، رزومه حرفه‌ای برای شما
+                            خود بسازید و در قالب استاندارد دانلود کنید.
+                        </p>
+
+                        <h3 class="font-bold text-gray-800 mb-2">قالب رزومه حرفه‌ای و اختصاصی</h3>
+                        <p class="text-gray-600 mb-4">
+                            آیا می‌خواهید رزومه‌ی شما یک قالب خاص و شخصی سازی شده باشد؟ با رزومه ساز آنلاین، می‌توانید
+                            رنگ و قالب دلخواه برای رزومه‌ی خود انتخاب کنید.
+                        </p>
+
+                        <h3 class="font-bold text-gray-800 mb-2">نمونه رزومه آماده برای انواع مشاغل</h3>
+                        <p class="text-gray-600 mb-4">
+                            در صورتی که اطلاعات کافی درباره رزومه‌های مطلوب جندین نمونه رزومه با مطالعه با ندارید،
+                            می‌توانید با راحتی یک رزومه با محتوای صحیح و استاندارد بسازید.
+                        </p>
+                    </div>
+                    <button onclick="showPage('auth')"
+                        class="mt-6 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-8 rounded-full transition-colors">
+                        ساخت رزومه کاری رایگان
+                    </button>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="./assets/images/image resume.png" alt="چرا آنلاین؟" class="rounded-xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش سوم: سوالات متداول -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">سوالات متداول کاربران</h2>
+            <div class="space-y-4">
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>چرا برای ساخت رزومه از این رزومه ساز آنلاین استفاده کنیم؟</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>استفاده از رزومه ساز، فرآیند ایجاد رزومه را بسیار سریعتر و آسان‌تر می‌کند. آیا تا به حال سعی
+                            کرده‌اید رزومه‌تان را با نرم افزار WORD بسازید؟ گاهی اوقات اگر یک تغییر کوچک در رزومه ایجاد
+                            کنید، چینش رزومه شما تغییر می‌کند. با رزومه ساز آنلاین، شما بدون نگرانی از مسائلی چینش مانند
+                            تنظیم فاصله‌ی پاراگراف‌ها، فقط به محتوای رزومه فکر می‌کنید. کافی است یک قالب رزومه انتخاب
+                            کنید، فرم اطلاعات را پر کنید و فایل رزومه را دانلود کنید.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>آیا ساخت و دانلود رزومه در سیوی رزومه رایگان است؟</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>بله، ساخت و دانلود رزومه در سیوی رزومه کاملاً رایگان است. شما می‌توانید بدون هیچ هزینه‌ای،
+                            رزومه‌های خود را بسازید و دانلود کنید.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>مدت زمان ساخت رزومه در سیوی رزومه چقدر است؟</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ساخت رزومه در سیوی رزومه بسیار سریع است. معمولاً کمتر از ۵ دقیقه طول می‌کشد تا رزومه‌ی شما
+                            آماده شود.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>امکان ویرایش اطلاعات رزومه پس از دانلود فایل رزومه وجود دارد؟</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>بله، شما می‌توانید بعد از دانلود فایل رزومه، آن را در نرم‌افزارهای ویرایش متن (مثل Word یا
+                            Google Docs) باز کنید و تغییرات لازم را اعمال کنید.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>آیا امکان ساخت چندین رزومه با یک حساب کاربری وجود دارد؟</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>بله، شما می‌توانید با یک حساب کاربری، چندین رزومه مختلف برای موقعیت‌های شغلی متفاوت بسازید و
+                            ذخیره کنید.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-footer mt-8">
+                <span>آیا پاسخ سوال خود را پیدا نکردید؟</span>
+                <a href="#" class="ml-2">سوالات متداول</a>
+            </div>
+        </div>
+    </section>
 
     <!-- فوتر -->
     <footer class="gradient-header-footer text-white pt-10 pb-6">
@@ -197,7 +633,7 @@
                     <h4 class="font-bold mb-3">منوها</h4>
                     <ul class="space-y-2 text-sm">
                         <li><a href="#" onclick="showPage('home')" class="hover-accent transition-colors">خانه</a></li>
-                        <li><a href="#" onclick="showPage('home')" class="hover-accent transition-colors">ساخت رزومه</a>
+                        <li><a href="#" onclick="showPage('auth')" class="hover-accent transition-colors">ساخت رزومه</a>
                         </li>
                         <li><a href="#" onclick="showPage('resumes')" class="hover-accent transition-colors">رزومه‌های
                                 من</a></li>
@@ -227,46 +663,8 @@
         </div>
     </footer>
 
-    <!-- مدال ساخت رزومه -->
-    <div id="resumeModal" class="modal-backdrop">
-        <div class="modal-content">
-            <h2 class="text-xl font-bold mb-4 text-center">اطلاعات شما</h2>
-            <form id="resumeForm">
-                <div class="mb-4">
-                    <label class="block mb-1 font-medium">نام</label>
-                    <input type="text"
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                        required />
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1 font-medium">نام خانوادگی</label>
-                    <input type="text"
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                        required />
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1 font-medium">شماره تماس</label>
-                    <input type="tel"
-                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                        required />
-                </div>
-                <div class="flex gap-3">
-                    <button type="submit"
-                        class="flex-1 bg-primary hover:bg-accent text-white py-2 rounded-lg font-medium transition-colors">
-                        ذخیره و ادامه
-                    </button>
-                    <button type="button" onclick="closeModal()"
-                        class="flex-1 bg-gray-200 hover:bg-gray-300 py-2 rounded-lg font-medium">
-                        لغو
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Lucide Icons (inline برای جلوگیری از CDN) -->
+    <!-- Lucide Icons -->
     <script>
-        // Lucide Icons (نسخه inline سبک)
         (function () {
             const lucide = {
                 createIcons: function () {
@@ -281,6 +679,10 @@
                         else if (name === 'instagram') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>';
                         else if (name === 'linkedin') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>';
                         else if (name === 'mail') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+                        else if (name === 'eye') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+                        else if (name === 'eye-off') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/></svg>';
+                        else if (name === 'refresh-cw') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M21 16v6h-6"/><path d="M16 2a10 10 0 0 1 0 20 10 10 0 0 1 0-20z"/></svg>';
+                        else if (name === 'arrow-right') el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
                         el.removeAttribute('data-lucide');
                     });
                 }
@@ -290,7 +692,7 @@
     </script>
 
     <script>
-        let isLoggedIn = false;
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         let hasResume = false;
 
         lucide.createIcons();
@@ -299,6 +701,11 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             if (pageName === 'home') {
                 document.getElementById('home-page').classList.add('active');
+            } else if (pageName === 'auth') {
+                document.getElementById('auth-page').classList.add('active');
+                toggleAuthMode(false); // پیش‌فرض: ورود
+                generateCaptcha(); // تولید کپچا برای فرم ورود
+                generateCaptchaReg(); // تولید کپچا برای فرم ثبت‌نام
             } else if (pageName === 'resumes') {
                 document.getElementById('resumes-page').classList.add('active');
                 document.getElementById('notLoggedIn').classList.add('hidden');
@@ -311,17 +718,125 @@
             }
         }
 
-        function openResumeModal() {
-            document.getElementById('resumeModal').style.display = 'flex';
+        function toggleAuthMode(isRegister = null) {
+            const isNowRegister = isRegister === null ?
+                (document.getElementById('loginFields').classList.contains('hidden') ? false : true) : isRegister;
+
+            if (isNowRegister) {
+                // نمایش فرم ورود
+                document.getElementById('loginFields').classList.remove('hidden');
+                document.getElementById('registerFields').classList.add('hidden');
+                document.getElementById('authTitle').textContent = 'ورود به حساب کاربری';
+                document.getElementById('authSubmitText').textContent = 'ورود';
+                document.getElementById('authToggleText').innerHTML = 'ثبت‌نام نکرده‌اید؟ <u>ثبت‌نام کنید</u>';
+                document.getElementById('authImage').src = './assets/images/image resume body .jpg';
+            } else {
+                // نمایش فرم ثبت‌نام
+                document.getElementById('loginFields').classList.add('hidden');
+                document.getElementById('registerFields').classList.remove('hidden');
+                document.getElementById('authTitle').textContent = 'ثبت‌نام در سایت';
+                document.getElementById('authSubmitText').textContent = 'ثبت‌نام';
+                document.getElementById('authToggleText').innerHTML = 'قبلاً ثبت‌نام کرده‌اید؟ <u>ورود کنید</u>';
+                document.getElementById('authImage').src = './assets/images/image resume.png';
+            }
         }
-        function closeModal() {
-            document.getElementById('resumeModal').style.display = 'none';
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            let iconId;
+            if (fieldId === 'loginPassword') iconId = 'loginEyeIcon';
+            else if (fieldId === 'registerPassword') iconId = 'registerEyeIcon';
+            else if (fieldId === 'registerPasswordConfirm') iconId = 'registerEyeConfirmIcon';
+
+            const icon = document.getElementById(iconId);
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.outerHTML = '<i data-lucide="eye-off" id="' + iconId + '" class="w-5 h-5"></i>';
+            } else {
+                field.type = 'password';
+                icon.outerHTML = '<i data-lucide="eye" id="' + iconId + '" class="w-5 h-5"></i>';
+            }
+            lucide.createIcons();
         }
-        document.getElementById('resumeForm').addEventListener('submit', (e) => {
+
+        // تولید کپچا
+        function generateCaptcha() {
+            const code = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('captchaCode').textContent = code;
+            document.getElementById('captchaInput').value = '';
+        }
+
+        function generateCaptchaReg() {
+            const code = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('captchaCodeReg').textContent = code;
+            document.getElementById('captchaInputReg').value = '';
+        }
+
+        document.getElementById('authForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            alert('اطلاعات شما ذخیره شد! حالا می‌توانید رزومه خود را طراحی کنید.');
-            closeModal();
-            hasResume = true;
+            const isLogin = !document.getElementById('registerFields').classList.contains('hidden');
+
+            if (isLogin) {
+                const email = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                const captcha = document.getElementById('captchaInput').value;
+                const captchaCode = document.getElementById('captchaCode').textContent;
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+                if (captcha !== captchaCode) {
+                    alert('کد کپچا اشتباه است!');
+                    return;
+                }
+
+                if (users[email] && users[email] === password) {
+                    alert('ورود موفقیت‌آمیز!');
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('currentUser', email);
+                    isLoggedIn = true;
+                    showPage('resumes');
+                } else {
+                    alert('ایمیل یا رمز عبور اشتباه است!');
+                }
+            } else {
+                const firstName = document.getElementById('registerFirstName').value;
+                const lastName = document.getElementById('registerLastName').value;
+                const email = document.getElementById('registerEmail').value;
+                const phone = document.getElementById('registerPhone').value;
+                const password = document.getElementById('registerPassword').value;
+                const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+                const captcha = document.getElementById('captchaInputReg').value;
+                const captchaCode = document.getElementById('captchaCodeReg').textContent;
+
+                if (password !== passwordConfirm) {
+                    alert('رمز عبور و تکرار آن مطابقت ندارند!');
+                    return;
+                }
+
+                if (captcha !== captchaCode) {
+                    alert('کد کپچا اشتباه است!');
+                    return;
+                }
+
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                if (users[email]) {
+                    alert('این ایمیل قبلاً ثبت شده است!');
+                    return;
+                }
+
+                users[email] = password;
+                localStorage.setItem('users', JSON.stringify(users));
+                // ذخیره اطلاعات کاربر
+                const userInfo = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    phone: "+98" + phone,
+                    email: email
+                };
+                localStorage.setItem('userInfo_' + email, JSON.stringify(userInfo));
+
+                alert('ثبت‌نام با موفقیت انجام شد! اکنون می‌توانید وارد شوید.');
+                toggleAuthMode(true); // رفتن به فرم ورود
+            }
         });
 
         document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -339,6 +854,11 @@
             }
             lucide.createIcons();
         });
+
+        // سوالات متداول
+        function toggleFAQ(item) {
+            item.classList.toggle('faq-active');
+        }
     </script>
 </body>
 
