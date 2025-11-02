@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>رزومه ساز استیچ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- فاوآیکون -->
+    <link rel="icon" href="assets/images/faveicon resume.webp">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6700EB',
+                        accent: '#FBC400',
+                        light: '#FFFFFF',
+                        gradientStart: '#8700C6',
+                        gradientEnd: '#5F00D9'
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .gradient-header-footer {
+            background: linear-gradient(135deg, #8700C6, #5F00D9);
+        }
+
+        .hover-accent:hover {
+            color: #FBC400 !important;
+        }
+
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(251, 196, 0, 0.5);
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(251, 196, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .blink {
+            animation: blink 1.8s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800">
+    <!-- هدر -->
+    <header class="gradient-header-footer text-white shadow-lg py-3 px-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2 space-x-reverse">
+
+                <img src="./assets/images/image resume.png" alt="image icon resume" class="w-[50px]">
+                <span class="text-[19px] font-bold">رزومه ساز استیچ</span>
+            </div>
+
+            <nav class="hidden md:flex space-x-6 space-x-reverse">
+                <a href="#" onclick="showPage('home')" class="hover-accent transition-colors duration-300">خانه</a>
+                <a href="#" onclick="showPage('home')" class="hover-accent transition-colors duration-300">ساخت
+                    رزومه</a>
+                <a href="#" onclick="showPage('resumes')" class="hover-accent transition-colors duration-300">رزومه‌های
+                    من</a>
+                <a href="#" onclick="showPage('home')" class="hover-accent transition-colors duration-300">راهنما</a>
+            </nav>
+
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <button id="theme-toggle" class="hover-accent p-2 rounded-full bg-white/10 hover:bg-white/20">
+                    <i data-lucide="moon" class="w-6 h-6"></i>
+                </button>
+                <button class="hover-accent p-2 rounded-full bg-white/10 hover:bg-white/20">
+                    <i data-lucide="user" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- صفحه اصلی -->
+    <main id="home-page" class="page active">
+        <div class="container mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row items-center gap-10 max-w-6xl mx-auto">
+                <div class="md:w-1/2 text-center md:text-right">
+                    <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">
+                        ساخت رزومه حرفه‌ای در چند دقیقه!
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        با ابزار «رزومه ساز استیچ»، رزومه‌ای زیبا، مدرن و کاملاً شخصی‌سازی‌شده بسازید که چشم‌ها را به
+                        خود جلب کند.
+                    </p>
+                    <button onclick="openResumeModal()"
+                        class="bg-primary hover:bg-accent text-white font-bold py-3 px-8 rounded-full transition-all duration-300 btn-glow">
+                        شروع کنید
+                    </button>
+                </div>
+                <div class="md:w-1/2 flex justify-center item-center">
+                    <img src="./assets/images/image resume body .jpg" alt="image resume in page" class="w-[300px]">
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- صفحه رزومه‌ها -->
+    <main id="resumes-page" class="page">
+        <div class="container mx-auto px-4 py-12 max-w-4xl">
+            <div id="notLoggedIn" class="text-center p-10 bg-white rounded-xl shadow-lg hidden">
+                <i data-lucide="log-in" class="w-12 h-12 text-yellow-500 mx-auto mb-4"></i>
+                <h2 class="text-2xl font-bold mb-4">ابتدا وارد شوید</h2>
+                <p class="text-gray-600 mb-6">برای مشاهده رزومه‌های خود، لطفاً وارد حساب کاربری خود شوید.</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="showPage('home')"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full btn-glow">بازگشت به صفحه
+                        اصلی</button>
+                    <button onclick="alert('صفحه ورود در حال توسعه است!')"
+                        class="bg-primary hover:bg-accent text-white px-6 py-3 rounded-full btn-glow">ورود / ثبت
+                        نام</button>
+                </div>
+            </div>
+
+            <div id="noResume" class="text-center p-10 bg-white rounded-xl shadow-lg hidden">
+                <i data-lucide="file-text" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                <h2 class="text-2xl font-bold mb-4">شما رزومه‌ای نساختید</h2>
+                <p class="text-gray-600 mb-6">هرگز دیر نیست! الان شروع کنید و رزومه حرفه‌ای خود را بسازید.</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="showPage('home')"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full btn-glow">بازگشت به صفحه
+                        اصلی</button>
+                    <button onclick="openResumeModal()"
+                        class="bg-primary hover:bg-accent text-white px-6 py-3 rounded-full btn-glow">ساخت رزومه
+                        انلاین</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- فوتر -->
+    <footer class="gradient-header-footer text-white pt-10 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-right">
+                <div>
+                    <div class="flex items-center space-x-2 space-x-reverse mb-3">
+                        <i data-lucide="briefcase" class="w-6 h-6 text-yellow-300"></i>
+                        <h3 class="text-xl font-bold">رزومه ساز استیچ</h3>
+                    </div>
+                    <p class="text-sm opacity-90">
+                        ابزاری هوشمند برای ساخت رزومه‌های حرفه‌ای، زیبا و متناسب با استانداردهای جهانی.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-3">منوها</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" onclick="showPage('home')" class="hover-accent transition-colors">خانه</a></li>
+                        <li><a href="#" onclick="showPage('home')" class="hover-accent transition-colors">ساخت رزومه</a>
+                        </li>
+                        <li><a href="#" onclick="showPage('resumes')" class="hover-accent transition-colors">رزومه‌های
+                                من</a></li>
+                        <li><a href="#" onclick="showPage('home')" class="hover-accent transition-colors">پشتیبانی</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-3">پرداخت امن</h4>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">ای‌اعتماد</span>
+                        <span class="text-xs bg-white/20 px-2 py-1 rounded">زرین‌پال</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-3">ما را دنبال کنید</h4>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="hover-accent"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="hover-accent"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="hover-accent"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/20 mt-8 pt-6 text-center text-sm opacity-80">
+                &copy; ۱۴۰۴ رزومه ساز استیچ. تمامی حقوق محفوظ است.
+            </div>
+        </div>
+    </footer>
+
+    <!-- مدال ساخت رزومه -->
+    <div id="resumeModal" class="modal-backdrop">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold mb-4 text-center">اطلاعات شما</h2>
+            <form id="resumeForm">
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium">نام</label>
+                    <input type="text"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                        required />
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium">نام خانوادگی</label>
+                    <input type="text"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                        required />
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium">شماره تماس</label>
+                    <input type="tel"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                        required />
+                </div>
+                <div class="flex gap-3">
+                    <button type="submit"
+                        class="flex-1 bg-primary hover:bg-accent text-white py-2 rounded-lg font-medium transition-colors">
+                        ذخیره و ادامه
+                    </button>
+                    <button type="button" onclick="closeModal()"
+                        class="flex-1 bg-gray-200 hover:bg-gray-300 py-2 rounded-lg font-medium">
+                        لغو
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // وضعیت کاربر (برای تست)
+        let isLoggedIn = false; // تغییر به true برای تست حالت لاگین شده
+        let hasResume = false;
+
+        // بارگذاری آیکون‌ها
+        lucide.createIcons();
+
+        // نمایش صفحات
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            if (pageName === 'home') {
+                document.getElementById('home-page').classList.add('active');
+            } else if (pageName === 'resumes') {
+                document.getElementById('resumes-page').classList.add('active');
+                // نمایش وضعیت مناسب
+                document.getElementById('notLoggedIn').classList.add('hidden');
+                document.getElementById('noResume').classList.add('hidden');
+                if (!isLoggedIn) {
+                    document.getElementById('notLoggedIn').classList.remove('hidden');
+                } else if (!hasResume) {
+                    document.getElementById('noResume').classList.remove('hidden');
+                }
+            }
+        }
+
+        // مدال
+        function openResumeModal() {
+            document.getElementById('resumeModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('resumeModal').style.display = 'none';
+        }
+        document.getElementById('resumeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('اطلاعات شما ذخیره شد! حالا می‌توانید رزومه خود را طراحی کنید.');
+            closeModal();
+            hasResume = true; // برای تست
+        });
+
+        // تغییر تم
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark');
+            if (isDark) {
+                document.body.classList.remove('dark');
+                document.body.style.backgroundColor = '#FFFFFF';
+                document.body.style.color = '#1F2937';
+                document.querySelector('#theme-toggle i').setAttribute('data-lucide', 'moon');
+            } else {
+                document.body.classList.add('dark');
+                document.body.style.backgroundColor = '#121212';
+                document.body.style.color = '#FFFFFF';
+                document.querySelector('#theme-toggle i').setAttribute('data-lucide', 'sun');
+            }
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>
